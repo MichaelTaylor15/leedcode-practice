@@ -370,7 +370,7 @@ public class Daily {
         return max;
     }
 
-    //322. 零钱兑换
+    //todo 322. 零钱兑换
     public static  int coinChange(int[] coins, int amount) {
         int n=coins.length;
         int count=0;
@@ -387,6 +387,32 @@ public class Daily {
             }
         }
         return count;
+    }
+    public static int countWays(int[][] ranges) {
+        long rs=0;
+        Arrays.sort(ranges, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0]-o2[0];
+            }
+        });
+        int n=ranges.length;
+        int cnt=1;
+        for (int i=1;i<n;i++){
+            if (ranges[i][0]<=ranges[i-1][1]){
+                cnt++;
+            }
+        }
+        if (cnt==n) return 2;
+        if (n>2){
+            int t=1;
+            for (int i=cnt;i>=1;i--){
+                t*=i;
+            }
+            rs+=t;
+        }
+        rs+=2;
+        return (int) (rs%(Math.pow(10,7)+7));
     }
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
@@ -451,8 +477,10 @@ public class Daily {
 //        f.add(1);f.add(2);f.add(3); //
 //        f.hasFrequency(1);
 //        f.deleteOne(3);f.hasFrequency(2);f.hasFrequency(3);
-        int[] coins={186,419,83,408};
-        int amount=6249;
-        System.out.println(coinChange(coins,amount));
+        //int[] coins={186,419,83,408};
+        //int amount=6249;
+        //System.out.println(coinChange(coins,amount));
+        int[][] ranges={{1,3},{10,20},{2,5},{4,8}};
+        System.out.println(countWays(ranges));
     }
 }
