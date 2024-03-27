@@ -388,31 +388,24 @@ public class Daily {
         }
         return count;
     }
+    // 2580. 统计将重叠区间合并成组的方案数
+    // 每个无交集的区间，都有2个方案数，放在第一组或第二组.
+    // 例:有1组无交集的区间，方案数：2；2组方案数：4(全放1、全放2,1A2B,1B2A)；
+    // 3组方案数:8(全放1、全放2、1AB2C、1A2BC、1B2AC、1C2AB、1AC2B、1BC2A)；
+    // pow(2,max(1,无交集方案数));
     public static int countWays(int[][] ranges) {
-        long rs=0;
-        Arrays.sort(ranges, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                return o1[0]-o2[0];
-            }
-        });
+        long rs=2;
+        long mod=1000000007;
+        Arrays.sort(ranges, (a,b)->a[0]-b[0]);
         int n=ranges.length;
-        int cnt=1;
+        int maxBorder=ranges[0][1];
         for (int i=1;i<n;i++){
-            if (ranges[i][0]<=ranges[i-1][1]){
-                cnt++;
+            if (ranges[i][0]>maxBorder){
+                rs=rs*2%mod;
             }
+            maxBorder=Math.max(maxBorder,ranges[i][1]);
         }
-        if (cnt==n) return 2;
-        if (n>2){
-            int t=1;
-            for (int i=cnt;i>=1;i--){
-                t*=i;
-            }
-            rs+=t;
-        }
-        rs+=2;
-        return (int) (rs%(Math.pow(10,7)+7));
+        return (int) rs;
     }
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
@@ -480,7 +473,7 @@ public class Daily {
         //int[] coins={186,419,83,408};
         //int amount=6249;
         //System.out.println(coinChange(coins,amount));
-        int[][] ranges={{1,3},{10,20},{2,5},{4,8}};
+        int[][] ranges={{34,56},{28,29},{12,16},{11,48},{28,54},{22,55},{28,41},{41,44}};
         System.out.println(countWays(ranges));
     }
 }
