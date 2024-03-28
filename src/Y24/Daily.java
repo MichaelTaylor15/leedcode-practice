@@ -407,6 +407,10 @@ public class Daily {
         }
         return (int) rs;
     }
+    //todo 1997. 访问完所有房间的第一天
+    public static int firstDayBeenInAllRooms(int[] nextVisit) {
+        return 1;
+    }
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
         //System.out.println(validPartition(nums));
@@ -473,7 +477,8 @@ public class Daily {
         //int[] coins={186,419,83,408};
         //int amount=6249;
         //System.out.println(coinChange(coins,amount));
-        int[][] ranges={{34,56},{28,29},{12,16},{11,48},{28,54},{22,55},{28,41},{41,44}};
-        System.out.println(countWays(ranges));
+//        int[][] ranges={{34,56},{28,29},{12,16},{11,48},{28,54},{22,55},{28,41},{41,44}};
+//        System.out.println(countWays(ranges));
+        System.out.println(firstDayBeenInAllRooms(new int[]{0,0,2}));
     }
 }

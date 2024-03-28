@@ -101,6 +101,23 @@ public class DFS {
         maxLen(root,val);
         return res;
     }
+
+    //108. 将有序数组转换为二叉搜索树
+    public TreeNodeII sortedArrayToBST(int[] nums) {
+        return dfsBST(nums,0,nums.length);
+    }
+    //[-10,-3,0,5,9]
+    public TreeNodeII dfsBST(int[] nums,int l,int r){
+        if (l>r){
+            return null;
+        }
+        int mid=(l+r)/2;
+        TreeNodeII node=new TreeNodeII(nums[mid]);
+        node.left=dfsBST(nums,l,mid-1);
+        node.right=dfsBST(nums,mid+1,r);
+        return node;
+    }
+
     public static void main(String[] args) {
 //                   1
 //                 /   \
