@@ -411,6 +411,55 @@ public class Daily {
     public static int firstDayBeenInAllRooms(int[] nextVisit) {
         return 1;
     }
+    //2908. 元素和最小的山形三元组 I
+    //前缀最小+后缀最小，循环当前nums[i],满足条件nums[i]<nums[j]&&nums[j]>nums[k](i<j<k)
+    public static int minimumSum(int[] nums) {
+        int n=nums.length;
+        if (n<2){
+            return -1;
+        }
+        int[] pre=new int[n];
+        pre[0]=nums[0];
+        int[] suf=new int[n];
+        suf[n-1]=nums[n-1];
+        for (int i=1;i<n;i++){
+            pre[i]=Math.min(pre[i-1],nums[i]);
+        }
+        for (int i=n-2;i>=0;i--){
+            suf[i]=Math.min(suf[i+1],nums[i]);
+        }
+        int min=Integer.MAX_VALUE;
+        for (int i=0;i<n;i++){
+            if (pre[i]<nums[i] && nums[i]>suf[i]){
+                min=Math.min(min,pre[i]+nums[i]+suf[i]);
+            }
+        }
+
+        return min==Integer.MAX_VALUE?-1:min;
+    }
+    //暴力枚举i、j、k
+    public static int minimumSumI(int[] nums) {
+        int n=nums.length;
+        if (n<2){
+            return -1;
+        }
+        int min=Integer.MAX_VALUE;
+        for (int i=0;i<n;i++){
+            int left=nums[i];
+            for (int j=i+1;j<n;j++){
+                int mid=nums[j];
+                if (left>mid){
+                    break;
+                }
+                for (int k=j+1;k<n;k++){
+                    if (left<mid && mid>nums[k]){
+                        min=Math.min(min,left+mid+nums[k]);
+                    }
+                }
+            }
+        }
+        return min==Integer.MAX_VALUE?-1:min;
+    }
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
         //System.out.println(validPartition(nums));
@@ -479,6 +528,7 @@ public class Daily {
         //System.out.println(coinChange(coins,amount));
 //        int[][] ranges={{34,56},{28,29},{12,16},{11,48},{28,54},{22,55},{28,41},{41,44}};
 //        System.out.println(countWays(ranges));
-        System.out.println(firstDayBeenInAllRooms(new int[]{0,0,2}));
+        //System.out.println(firstDayBeenInAllRooms(new int[]{0,0,2}));
+        System.out.println(minimumSum(new int[]{6,5,4,3,4,5}));
     }
 }
