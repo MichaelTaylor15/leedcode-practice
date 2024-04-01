@@ -461,6 +461,40 @@ public class Daily {
         return min==Integer.MAX_VALUE?-1:min;
     }
 
+    //todo 2952. 需要添加的硬币的最小数量
+    public int minimumAddedCoins(int[] coins, int target) {
+        Arrays.sort(coins);
+        return 1;
+    }
+
+    //331. 验证二叉树的前序序列化
+    //#表示为空节点，叶子节点会有两个#,遇到两个#，将叶子节点和##化为一个#，前序序列化的树结果会剩下一个#.
+    //9,3,4,#,#,1,#,#,2,#,6,#,#
+    //9,3,#,1,#   ->加入#
+    //9,3,#,#     ->消除
+    //9,#,2,#,6,# ->加入#
+    //9,#,2,#,#   ->消除
+    //9,#,#       ->消除
+    //#           done
+    public static boolean isValidSerialization(String preorder) {
+        int n=preorder.length();
+        if (n<1){
+            return false;
+        }
+        List<String> list=new ArrayList<>();
+        String[] strs=preorder.split(",");
+        for (int i=0;i<strs.length;i++){
+            list.add(strs[i]);
+            while (list.size()>=3 && list.get(list.size()-1).equals("#") && list.get(list.size()-2).equals("#") && !list.get(list.size()-3).equals("#")){
+                list.remove(list.size()-1);
+                list.remove(list.size()-1);
+                list.remove(list.size()-1);
+                list.add("#");
+            }
+        }
+        return list.size()==1 && list.get(0).equals("#");
+    }
+
     //2810. 故障键盘
     public static String finalString(String s) {
         StringBuilder res=new StringBuilder();
@@ -545,6 +579,7 @@ public class Daily {
         //System.out.println(minimumSum(new int[]{6,5,4,3,4,5}));
 
         String s="string";
-        System.out.println(finalString(s));
+        //System.out.println(finalString(s));
+        System.out.println(isValidSerialization("9,#,92,#,#"));
     }
 }
