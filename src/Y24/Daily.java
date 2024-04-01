@@ -460,6 +460,19 @@ public class Daily {
         }
         return min==Integer.MAX_VALUE?-1:min;
     }
+
+    //2810. 故障键盘
+    public static String finalString(String s) {
+        StringBuilder res=new StringBuilder();
+        for (int i=0;i<s.length();i++){
+            if (s.charAt(i)=='i'){
+                res.reverse();
+            }else{
+                res.append(s.charAt(i));
+            }
+        }
+        return res.toString();
+    }
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
         //System.out.println(validPartition(nums));
@@ -529,6 +542,9 @@ public class Daily {
 //        int[][] ranges={{34,56},{28,29},{12,16},{11,48},{28,54},{22,55},{28,41},{41,44}};
 //        System.out.println(countWays(ranges));
         //System.out.println(firstDayBeenInAllRooms(new int[]{0,0,2}));
-        System.out.println(minimumSum(new int[]{6,5,4,3,4,5}));
+        //System.out.println(minimumSum(new int[]{6,5,4,3,4,5}));
+
+        String s="string";
+        System.out.println(finalString(s));
     }
 }
