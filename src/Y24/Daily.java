@@ -1,6 +1,7 @@
 package Y24;
 
 import cn.hutool.aop.interceptor.CglibInterceptor;
+import cn.hutool.core.text.StrBuilder;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import com.sun.org.apache.bcel.internal.generic.INEG;
 
@@ -507,6 +508,121 @@ public class Daily {
         }
         return res.toString();
     }
+
+    //todo 894. 所有可能的真二叉树
+    //n=7,真二叉树情况，中序（左子树节点数根节点右子树节点数），313 115 511  (5>3进行拆分) 113 311
+    //""
+    public List<TreeNode> allPossibleFBT(int n) {
+        List<TreeNode> list=new ArrayList<>();
+        if (n%2==0){
+            return list;
+        }
+        return null;
+    }
+    //415. 字符串相加
+    //priority version
+    public static String addStrings(String num1, String num2) {
+        //priority version 遍历数组，char - '0' 模拟数字相加，头插法存入结果串
+        int n=num1.length();
+        int m=num2.length();
+        int i=n-1;
+        int j=m-1;
+        //进位
+        int t=0;
+        StringBuilder res=new StringBuilder();
+        while(i>=0 || j>=0){
+            int digital1=i>=0?num1.charAt(i)-'0':0;
+            int digital2=j>=0?num2.charAt(j)-'0':0;
+            int sum=digital1+digital2+t;
+            t=sum/10;
+            sum%=10;
+            res.insert(0,sum);
+            i--;
+            j--;
+        }
+        if (t!=0){
+            res.insert(0,t);
+        }
+        return res.toString();
+    }
+    public static String addStrings1(String num1, String num2) {
+        int n=num1.length();
+        int m=num2.length();
+        int i=n-1;
+        int j=m-1;
+        //进位
+        int t=0;
+        StringBuilder res=new StringBuilder();
+        while(i>=0 && j>=0){
+            int sum=num1.charAt(i)-'0'+num2.charAt(j)-'0';
+            sum+=t;
+            if (sum>=10){
+                t=1;
+                sum%=10;
+            }else{
+                t=0;
+            }
+            res.insert(0,sum);
+            i--;
+            j--;
+        }
+        while (i>=0){
+            int sum= num1.charAt(i)-'0';
+            sum+=t;
+            if (sum>=10){
+                sum%=10;
+                t=1;
+            }else{
+                t=0;
+            }
+            res.insert(0,sum);
+            i--;
+        }
+        while (j>=0){
+            int sum= num2.charAt(j)-'0';
+            sum+=t;
+            if (sum>=10){
+                sum%=10;
+                t=1;
+            }else{
+                t=0;
+            }
+            res.insert(0,sum);
+            j--;
+        }
+        if (t!=0){
+            res.insert(0,t);
+        }
+        return res.toString();
+    }
+
+    //17. 电话号码的字母组合
+    //回溯
+    public static List<String> letterCombinations(String digits) {
+        int n=digits.length();
+        List<String> list=new ArrayList<>();
+        HashMap<Integer, StringBuilder> hashMap=new HashMap<>();
+        if (n<1){
+            return list;
+        }
+        String[] hash=new String[]{"","","abc","def","ghi","jkl","mno","pqrs","tuv","wxyz"};
+        combinationHelper(list,digits,0,new StringBuilder(),hash);
+        return list;
+    }
+    public static void combinationHelper(List<String> list,String digits,int index,StringBuilder temp,String[] hash){
+        if (index==digits.length()){
+            list.add(temp.toString());
+            return;
+        }
+        char idx=digits.charAt(index);
+        StringBuilder stringBuilder= new StringBuilder(hash[idx - '0']);
+        for (int i=0;i<stringBuilder.length();i++){
+            temp.append(stringBuilder.charAt(i));
+            combinationHelper(list,digits,index+1,temp,hash);
+            //长度==digits.length 回溯到下一个循环，删除当前index的char
+            temp.deleteCharAt(index);
+        }
+    }
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
         //System.out.println(validPartition(nums));
@@ -578,8 +694,10 @@ public class Daily {
         //System.out.println(firstDayBeenInAllRooms(new int[]{0,0,2}));
         //System.out.println(minimumSum(new int[]{6,5,4,3,4,5}));
 
-        String s="string";
+        //String s="string";
         //System.out.println(finalString(s));
-        System.out.println(isValidSerialization("9,#,92,#,#"));
+        //System.out.println(isValidSerialization("9,#,92,#,#"));
+        //System.out.println(addStrings("9","99"));
+        System.out.println(letterCombinations("23"));
     }
 }
