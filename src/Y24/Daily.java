@@ -601,7 +601,6 @@ public class Daily {
     public static List<String> letterCombinations(String digits) {
         int n=digits.length();
         List<String> list=new ArrayList<>();
-        HashMap<Integer, StringBuilder> hashMap=new HashMap<>();
         if (n<1){
             return list;
         }
