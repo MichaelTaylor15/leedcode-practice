@@ -4,6 +4,7 @@ import cn.hutool.aop.interceptor.CglibInterceptor;
 import cn.hutool.core.text.StrBuilder;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import com.sun.org.apache.bcel.internal.generic.INEG;
+import com.sun.org.apache.bcel.internal.generic.LUSHR;
 
 import java.math.BigInteger;
 import java.util.*;
@@ -622,6 +623,7 @@ public class Daily {
             temp.deleteCharAt(index);
         }
     }
+
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
         //System.out.println(validPartition(nums));
@@ -697,6 +699,66 @@ public class Daily {
         //System.out.println(finalString(s));
         //System.out.println(isValidSerialization("9,#,92,#,#"));
         //System.out.println(addStrings("9","99"));
-        System.out.println(letterCombinations("23"));
+//        System.out.println(letterCombinations("23"));
+
+        ThroneInheritance t= new ThroneInheritance("king"); // 继承顺序：king
+        t.birth("king", "clyde"); // 继承顺序：king > andy
+        t.getInheritanceOrder();
+        t.birth("clyde", "shannon"); // 继承顺序：king > andy > bob
+        t.getInheritanceOrder();
+        t.birth("shannon", "scott"); // 继承顺序：king > andy > bob > catherine
+        t.getInheritanceOrder();
+        t.birth("king", "keith"); // 继承顺序：king > andy > matthew > bob > catherine
+        t.getInheritanceOrder();
+        t.birth("clyde", "joseph"); // 继承顺序：king > andy > matthew > bob > alex > catherine
+        t.getInheritanceOrder();
+    }
+}
+
+//1600. 王位继承顺序
+class ThroneInheritance {
+    String name;
+    List<ThroneInheritance> sons;
+    boolean dead;
+    HashMap<String, ThroneInheritance> hashMap;
+    public ThroneInheritance(String kingName) {
+        name=kingName;
+        hashMap=new HashMap<>();
+        hashMap.put(kingName,this);
+        sons=new ArrayList<>();
+        dead=false;
+    }
+    public void birth(String parentName, String childName) {
+        if (hashMap.containsKey(parentName)){
+            ThroneInheritance son=new ThroneInheritance(childName);
+            hashMap.get(parentName).sons.add(son);
+            hashMap.put(childName,son);
+        }
+    }
+
+    public void death(String name) {
+        if (hashMap.containsKey(name)){
+            hashMap.get(name).dead=true;
+        }
+    }
+
+    public List<String> getInheritanceOrder() {
+        List<String> list=new ArrayList<>();
+        if (!this.dead){
+            list.add(this.name);
+        }
+        helper(list,this.name);
+        return list;
+    }
+    public void helper(List<String> list,String name){
+        if (!hashMap.containsKey(name)){
+            return;
+        }
+        for (ThroneInheritance temp:hashMap.get(name).sons){
+            if (!temp.dead){
+                list.add(temp.name);
+            }
+            helper(list,temp.name);
+        }
     }
 }
