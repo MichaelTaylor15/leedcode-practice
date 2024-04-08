@@ -716,6 +716,7 @@ public class Daily {
 }
 
 //1600. 王位继承顺序
+//多叉树+HashMap存储 可以快速找到节点 实现add操作：O(1) 遍历：递归
 class ThroneInheritance {
     String name;
     List<ThroneInheritance> sons;
