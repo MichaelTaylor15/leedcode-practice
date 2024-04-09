@@ -623,6 +623,45 @@ public class Daily {
             temp.deleteCharAt(index);
         }
     }
+    //todo 2009. 使数组连续的最少操作数
+    //排序过后+原地去重，枚举nums[i]作为右侧端点，窗口(nums[i]-n+1,nums[i])
+    public static int minOperations(int[] nums) {
+        int times=0;
+        int max=Integer.MIN_VALUE;
+        int min=Integer.MAX_VALUE;
+        int n=nums.length;
+        Arrays.sort(nums);
+        int t=1;
+        //去重，相同时 t只会停留在第二个相同的数 t成为新的长度，超出部分是重复的
+        for (int i=1;i<n;i++){
+            if (nums[i]!=nums[i-1]){
+                nums[t++]=nums[i];
+            }
+        }
+        System.out.println(Arrays.toString(nums));
+
+        for (int i=0;i<n;i++){
+        }
+        return times;
+    }
+
+    //2529. 正整数和负整数的最大计数
+    public int maximumCount(int[] nums) {
+        int n=nums.length;
+        int t=0;
+        int k=0;
+        for (int i=0;i<n;i++){
+            if (nums[i]==0){
+                continue;
+            }
+            if (nums[i]<0){
+                t++;
+            }else{
+                k++;
+            }
+        }
+        return Math.max(t, k);
+    }
 
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
@@ -701,17 +740,18 @@ public class Daily {
         //System.out.println(addStrings("9","99"));
 //        System.out.println(letterCombinations("23"));
 
-        ThroneInheritance t= new ThroneInheritance("king"); // 继承顺序：king
-        t.birth("king", "clyde"); // 继承顺序：king > andy
-        t.getInheritanceOrder();
-        t.birth("clyde", "shannon"); // 继承顺序：king > andy > bob
-        t.getInheritanceOrder();
-        t.birth("shannon", "scott"); // 继承顺序：king > andy > bob > catherine
-        t.getInheritanceOrder();
-        t.birth("king", "keith"); // 继承顺序：king > andy > matthew > bob > catherine
-        t.getInheritanceOrder();
-        t.birth("clyde", "joseph"); // 继承顺序：king > andy > matthew > bob > alex > catherine
-        t.getInheritanceOrder();
+//        ThroneInheritance t= new ThroneInheritance("king"); // 继承顺序：king
+//        t.birth("king", "clyde"); // 继承顺序：king > andy
+//        t.getInheritanceOrder();
+//        t.birth("clyde", "shannon"); // 继承顺序：king > andy > bob
+//        t.getInheritanceOrder();
+//        t.birth("shannon", "scott"); // 继承顺序：king > andy > bob > catherine
+//        t.getInheritanceOrder();
+//        t.birth("king", "keith"); // 继承顺序：king > andy > matthew > bob > catherine
+//        t.getInheritanceOrder();
+//        t.birth("clyde", "joseph"); // 继承顺序：king > andy > matthew > bob > alex > catherine
+//        t.getInheritanceOrder();
+        System.out.println(minOperations(new int[]{1,3,4,4,4,4,6,7}));
     }
 }
 
