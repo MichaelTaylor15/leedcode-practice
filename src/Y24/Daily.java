@@ -662,7 +662,27 @@ public class Daily {
         }
         return Math.max(t, k);
     }
-
+    //1702. 修改后的最大二进制字符串 00->10 10->01
+    //从头开始遍历，发现有00 直接变 10，如果发现 01
+    //                             开始从后往前遍历 把 10 变01 直至最前的0变1
+    //000110 ->100110 -> 110110 -> 110101 -> 110011 -> 111011
+    //方法2直接构造 字符串中没有0则返回 字符串始终只有一个0 记录第一个0的位置和0的个数，第一个0往后移n(0的个数)
+    public static String maximumBinaryString(String binary) {
+        int idx=binary.indexOf("0");
+        if (idx==-1){
+            return binary;
+        }
+        int t=0;
+        StringBuilder res=new StringBuilder();
+        for (int i=0;i<binary.length();i++){
+            res.append(1);
+            if (binary.charAt(i)=='0'){
+                t++;
+            }
+        }
+        res.setCharAt(idx+t-1,'0');
+        return res.toString();
+    }
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
         //System.out.println(validPartition(nums));
@@ -751,7 +771,8 @@ public class Daily {
 //        t.getInheritanceOrder();
 //        t.birth("clyde", "joseph"); // 继承顺序：king > andy > matthew > bob > alex > catherine
 //        t.getInheritanceOrder();
-        System.out.println(minOperations(new int[]{1,3,4,4,4,4,6,7}));
+        //System.out.println(minOperations(new int[]{1,3,4,4,4,4,6,7}));
+        System.out.println(maximumBinaryString("000110"));
     }
 }
 

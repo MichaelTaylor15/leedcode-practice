@@ -94,7 +94,7 @@ public class Graph {
         return i>=0 && i<grid.length &&  j>=0 && j<grid[i].length;
     }
     //994. 腐烂的橘子
-    //队列存储位置 (i,j)，可以使用Queue<int[]> i=arr[0],j=arr[1]
+    //BFS 队列存储位置 (i,j)，可以使用Queue<int[]> i=arr[0],j=arr[1]
     //从何处开始？将所有腐烂状态的橘子入队，判断上下左右是否有新鲜橘子，有：更改腐烂状态，时间+1
     public static int orangesRotting(int[][] grid) {
         Queue<int[]> queue=new ArrayDeque<>();
