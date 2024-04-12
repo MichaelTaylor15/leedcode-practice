@@ -683,6 +683,18 @@ public class Daily {
         res.setCharAt(idx+t-1,'0');
         return res.toString();
     }
+
+    //2923. 找到冠军 I
+    //[0][2]=1 [i][0]==1?i:0  [n][i]==1?n:i
+    public static int findChampion(int[][] grid) {
+        int ans=0;
+        for (int i=0;i< grid.length;i++){
+            if (grid[i][ans]==1){
+                ans=i;
+            }
+        }
+        return ans;
+    }
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
         //System.out.println(validPartition(nums));
@@ -772,7 +784,8 @@ public class Daily {
 //        t.birth("clyde", "joseph"); // 继承顺序：king > andy > matthew > bob > alex > catherine
 //        t.getInheritanceOrder();
         //System.out.println(minOperations(new int[]{1,3,4,4,4,4,6,7}));
-        System.out.println(maximumBinaryString("000110"));
+//        System.out.println(maximumBinaryString("000110"));
+        System.out.println(findChampion(new int[][]{{0,0,1},{1,0,1},{0,0,0}}));
     }
 }
 
