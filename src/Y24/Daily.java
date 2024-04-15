@@ -695,6 +695,92 @@ public class Daily {
         }
         return ans;
     }
+
+    //4. 寻找两个正序数组的中位数
+    // (n+m)%2==0?  中位数=(mid1+mid2)/2;
+    // (n+m)%2!=0?  中位数=mid;
+    // {1,3,5} {2,4,6}     {1,3} {2,4,6}
+    public static double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int n= nums1.length;
+        int m=nums2.length;
+        int idx1=0,idx2=0;
+        List<Integer> list=new ArrayList<>();
+        while (idx1<n && idx2<m){
+            if (nums1[idx1]<nums2[idx2]){
+               list.add(nums1[idx1++]);
+            }else {
+                list.add(nums2[idx2++]);
+            }
+        }
+
+        while (idx1<n){
+            list.add(nums1[idx1++]);
+        }
+        while (idx2<m){
+            list.add(nums2[idx2++]);
+        }
+        if (list.size()%2==0){
+            return (double) (list.get(list.size()/2-1)+list.get(list.size()/2))/2;
+        }else{
+            return list.get(list.size()/2);
+        }
+    }
+
+    //705. 设计哈希集合
+    class MyHashSet {
+        //数组+链表
+        public int defaultLength=1001;
+        private LinkedList<Integer>[] list;
+        public MyHashSet() {
+            list= new LinkedList[defaultLength];
+            for (int i=0;i<defaultLength;i++){
+                list[i]=new LinkedList<Integer>();
+            }
+        }
+
+        //取模求出数组位置取出链表，判断链表是否已存在该元素，已经存在则不需要插入，不存在则在链表尾部插入
+        public void add(int key) {
+            int idx=key%defaultLength;
+            Iterator<Integer> iterator=list[idx].iterator();
+            while (iterator.hasNext()){
+                int value=iterator.next();
+                //已存在直接返回
+                if (value==key){
+                    return;
+                }
+            }
+            //尾部插入元素
+            list[idx].offerLast(key);
+        }
+        //循环遍历删除该元素
+        public void remove(int key) {
+            int idx=key%defaultLength;
+            //传递引用类型，调用删除对象
+            //link.remove((Integer) key);
+            Iterator<Integer> iterator=list[idx].iterator();
+            while (iterator.hasNext()){
+                Integer value=iterator.next();
+                if (value==key){
+                    list[idx].remove(value);
+                    return;
+                }
+            }
+        }
+
+        public boolean contains(int key) {
+            LinkedList<Integer> link=list[key%defaultLength];
+            Iterator<Integer> iterator=link.iterator();
+            while (iterator.hasNext()){
+                int value=iterator.next();
+                if (value==key){
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
         //System.out.println(validPartition(nums));
@@ -785,7 +871,8 @@ public class Daily {
 //        t.getInheritanceOrder();
         //System.out.println(minOperations(new int[]{1,3,4,4,4,4,6,7}));
 //        System.out.println(maximumBinaryString("000110"));
-        System.out.println(findChampion(new int[][]{{0,0,1},{1,0,1},{0,0,0}}));
+        //System.out.println(findChampion(new int[][]{{0,0,1},{1,0,1},{0,0,0}}));
+        System.out.println(findMedianSortedArrays(new int[]{1,3,5},new int[]{2,4}));
     }
 }
 
