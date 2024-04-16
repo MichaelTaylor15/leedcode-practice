@@ -1,12 +1,8 @@
 package Y24;
 
-import cn.hutool.aop.interceptor.CglibInterceptor;
-import cn.hutool.core.text.StrBuilder;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
-import com.sun.org.apache.bcel.internal.generic.INEG;
-import com.sun.org.apache.bcel.internal.generic.LUSHR;
+import com.sun.jmx.remote.internal.ArrayQueue;
+import org.w3c.dom.ls.LSException;
 
-import java.math.BigInteger;
 import java.util.*;
 
 class MyQueue {
@@ -696,7 +692,31 @@ public class Daily {
         return ans;
     }
 
+    //2924. 找到冠军 II
+    //edges[i]表示[i][0]到[i][1]有边，即[i][0]比[i][1]强
+    //使用数组表示节点n的入度个数，n的入度：指向n的节点的个数，当指向n的节点数为0时说明没有比n强的
+    public static int findChampion(int n, int[][] edges) {
+        int[] arr=new int[n];
+        int res=-1;
+        for (int[] edge : edges) {
+            arr[edge[1]] = 1;
+        }
+        int c=0;
+        for (int i=0;i<n;i++){
+            if (arr[i]==0){
+                c++;
+                res=i;
+            }
+            if (c > 1) {
+                return -1;
+            }
+        }
+        return res;
+    }
+
+
     //4. 寻找两个正序数组的中位数
+    //使用第三个数组存储排序后的数 时间复杂度O(m+n) 空间复杂度O(m+n)
     // (n+m)%2==0?  中位数=(mid1+mid2)/2;
     // (n+m)%2!=0?  中位数=mid;
     // {1,3,5} {2,4,6}     {1,3} {2,4,6}
@@ -726,61 +746,76 @@ public class Daily {
         }
     }
 
-    //705. 设计哈希集合
-    class MyHashSet {
-        //数组+链表
-        public int defaultLength=1001;
-        private LinkedList<Integer>[] list;
-        public MyHashSet() {
-            list= new LinkedList[defaultLength];
-            for (int i=0;i<defaultLength;i++){
-                list[i]=new LinkedList<Integer>();
+    /**
+     * Note: 类名、方法名、参数名已经指定，请勿修改
+     * <p>
+     * <p>
+     * 根据价格列表和当前点券数，计算出能买到的最多英雄
+     *
+     * @param costs int整型 一维数组 英雄点券价格列表
+     * @param coins int整型  拥有的点券
+     * @return int整型一维数组
+     */
+    public static List<Integer> maxHeroes(int[] costs, int coins) {
+        // write code here
+        List<Integer> heroes = new ArrayList<>();
+        int remainingCoins = coins;
+        for (int cost : costs) {
+            if (remainingCoins >= cost) {
+                heroes.add(cost);
+                remainingCoins -= cost;
+            } else {
+                break;
             }
         }
+        return heroes;
+    }
+    //924. 尽量减少恶意软件的传播
 
-        //取模求出数组位置取出链表，判断链表是否已存在该元素，已经存在则不需要插入，不存在则在链表尾部插入
-        public void add(int key) {
-            int idx=key%defaultLength;
-            Iterator<Integer> iterator=list[idx].iterator();
-            while (iterator.hasNext()){
-                int value=iterator.next();
-                //已存在直接返回
-                if (value==key){
-                    return;
-                }
-            }
-            //尾部插入元素
-            list[idx].offerLast(key);
-        }
-        //循环遍历删除该元素
-        public void remove(int key) {
-            int idx=key%defaultLength;
-            //传递引用类型，调用删除对象
-            //link.remove((Integer) key);
-            Iterator<Integer> iterator=list[idx].iterator();
-            while (iterator.hasNext()){
-                Integer value=iterator.next();
-                if (value==key){
-                    list[idx].remove(value);
-                    return;
+    /**
+     *
+     * @param graph 邻接矩阵 graph[i][j]=1,表示节点i和j是连通的
+     * @param initial 感染的节点列表
+     * @return 最小感染节点
+     * BFS记录所有连通分量
+     */
+    public static int minMalwareSpread(int[][] graph, int[] initial) {
+        List<List<Integer>> list=new ArrayList<>();
+        boolean[] visited=new boolean[graph.length];
+        for (int i=0;i<graph.length;i++){
+            for (int j=0;j<graph[i].length;j++){
+                if (i!=j && !visited[i] && graph[i][j]==1){
+                    List<Integer> temp=new ArrayList<>();
+                    BFSHelper(i,visited,temp,graph);
+                    list.add(temp);
                 }
             }
         }
-
-        public boolean contains(int key) {
-            LinkedList<Integer> link=list[key%defaultLength];
-            Iterator<Integer> iterator=link.iterator();
-            while (iterator.hasNext()){
-                int value=iterator.next();
-                if (value==key){
-                    return true;
-                }
-            }
-            return false;
-        }
+        System.out.println(list);
+        return 1;
     }
 
-
+    /**
+     * 以节点v开始进行BFS搜索连通分量
+     * @param v 访问的节点
+     * @param visited 节点的访问记录表 true|false
+     * @param list 以v节点开始的连通分量
+     */
+    public static void BFSHelper(int v,boolean[] visited,List<Integer> list,int[][] graph){
+        Queue<Integer> queue=new ArrayDeque<>();
+        queue.add(v);
+        list.add(v);
+        visited[v]=true;
+        while (!queue.isEmpty()){
+            int index=queue.poll();
+            for (int k=0;k<graph[index].length;k++){
+                if (!visited[k] && index!=k && graph[index][k]==1){
+                    list.add(k);
+                    queue.add(k);
+                }
+            }
+        }
+    }
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
         //System.out.println(validPartition(nums));
@@ -872,12 +907,15 @@ public class Daily {
         //System.out.println(minOperations(new int[]{1,3,4,4,4,4,6,7}));
 //        System.out.println(maximumBinaryString("000110"));
         //System.out.println(findChampion(new int[][]{{0,0,1},{1,0,1},{0,0,0}}));
-        System.out.println(findMedianSortedArrays(new int[]{1,3,5},new int[]{2,4}));
+//        System.out.println(findMedianSortedArrays(new int[]{1,3,5},new int[]{2,4}));
+        //System.out.println(findChampion(2,new int[][]{{1,0}}));
+//        System.out.println(maxHeroes(new int[]{9, 1, 4, 6, 3, 2, 5},10));
+        System.out.println(minMalwareSpread(new int[][]{{1,1,0},{1,1,0},{0,0,1}},new int[]{0,1}));
     }
 }
 
 //1600. 王位继承顺序
-//多叉树+HashMap存储 可以快速找到节点 实现add操作：O(1) 遍历：递归
+//多叉树 + HashMap存储可以快速找到节点 实现add操作：O(1) 遍历：DFS
 class ThroneInheritance {
     String name;
     List<ThroneInheritance> sons;
@@ -922,5 +960,120 @@ class ThroneInheritance {
             }
             helper(list,temp.name);
         }
+    }
+}
+class Entry{
+    int key;
+    int value;
+    Entry(int key,int value){
+        this.key=key;
+        this.value=value;
+    }
+}
+//706. 设计哈希映射
+class MyHashMap {
+    //数组+链表，构造Entry数据结构，key、value作为链表的节点
+    public int defaultLength=1001;
+    private LinkedList<Entry>[] lists;
+    public MyHashMap() {
+        lists=new LinkedList[defaultLength];
+        for (int i=0;i<defaultLength;i++){
+            lists[i]=new LinkedList<>();
+        }
+    }
+    //通过hash计算数组索引位置，获取到该链表，遍历链表，判断链表上是否存在key相同的节点，相同则替换value，不相同则在尾部插入节点
+    public void put(int key, int value) {
+        int index=key%defaultLength;
+        LinkedList<Entry> link=lists[index];
+        Iterator<Entry> iterator=link.iterator();
+        while (iterator.hasNext()){
+            Entry entry=iterator.next();
+            if (entry.key==key){
+                entry.value=value;
+                return;
+            }
+        }
+        //插入新节点
+        Entry entry=new Entry(key,value);
+        lists[index].add(entry);
+    }
+
+    public int get(int key) {
+        int index=key%defaultLength;
+        LinkedList<Entry> link=lists[index];
+        Iterator<Entry> iterator=link.iterator();
+        while (iterator.hasNext()){
+            Entry entry=iterator.next();
+            if (entry.key==key){
+                return entry.value;
+            }
+        }
+        return -1;
+    }
+
+    public void remove(int key) {
+        int index=key%defaultLength;
+        LinkedList<Entry> link=lists[index];
+        Iterator<Entry> iterator=link.iterator();
+        while (iterator.hasNext()){
+            Entry entry=iterator.next();
+            if (entry.key==key){
+                link.remove(entry);
+                return;
+            }
+        }
+    }
+}
+//705. 设计哈希集合
+class MyHashSet {
+    //数组+链表
+    public int defaultLength=1001;
+    private LinkedList<Integer>[] list;
+    public MyHashSet() {
+        list= new LinkedList[defaultLength];
+        for (int i=0;i<defaultLength;i++){
+            list[i]=new LinkedList<Integer>();
+        }
+    }
+
+    //取模求出数组位置取出链表，判断链表是否已存在该元素，已经存在则不需要插入，不存在则在链表尾部插入
+    public void add(int key) {
+        int idx=key%defaultLength;
+        Iterator<Integer> iterator=list[idx].iterator();
+        while (iterator.hasNext()){
+            int value=iterator.next();
+            //已存在直接返回
+            if (value==key){
+                return;
+            }
+        }
+        //尾部插入元素
+        list[idx].offerLast(key);
+    }
+    //循环遍历删除该元素
+    public void remove(int key) {
+        int idx=key%defaultLength;
+        //传递引用类型，调用删除对象
+        //link.remove((Integer) key);
+        Iterator<Integer> iterator=list[idx].iterator();
+        while (iterator.hasNext()){
+            Integer value=iterator.next();
+            if (value==key){
+                list[idx].remove(value);
+                return;
+            }
+        }
+    }
+
+    public boolean contains(int key) {
+        LinkedList<Integer> link=list[key%defaultLength];
+        Iterator<Integer> iterator=link.iterator();
+        while (iterator.hasNext()){
+            int value=iterator.next();
+            if (value==key){
+                return true;
+            }
+        }
+        return false;
     }
 }
