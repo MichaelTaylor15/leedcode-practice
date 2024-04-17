@@ -747,11 +747,11 @@ public class Daily {
     }
 
     /**
+     * todo
      * Note: 类名、方法名、参数名已经指定，请勿修改
      * <p>
      * <p>
      * 根据价格列表和当前点券数，计算出能买到的最多英雄
-     *
      * @param costs int整型 一维数组 英雄点券价格列表
      * @param coins int整型  拥有的点券
      * @return int整型一维数组
@@ -773,7 +773,7 @@ public class Daily {
     //924. 尽量减少恶意软件的传播
 
     /**
-     *
+     * todo
      * @param graph 邻接矩阵 graph[i][j]=1,表示节点i和j是连通的
      * @param initial 感染的节点列表
      * @return 最小感染节点

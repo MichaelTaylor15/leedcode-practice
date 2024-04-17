@@ -154,6 +154,63 @@ public class Graph {
         }
         return c>0?-1:minutes;
     }
+
+
+
+    /**
+     * 207. 课程表
+     * @param numCourses 课程数目 0~n-1
+     * @param prerequisites 先修课程矩阵 prerequisites[i]=[j,k] 学习j课程需要先修课程k  即 k->j
+     * @return 是否能修完所有课程
+     * 拓扑排序
+     * 作用：用于检测一个有向图是否有环，每次将入度为0的节点(没有节点指向他)消除以及相关的边，最后消除完所有节点和边就证明无环，拓扑排序的结果并不唯一
+     * 思想：使用队列预先存储入度为0的节点，开始遍历队列
+     * 辅助结构：队列(存储入度为0的节点)，邻接表(存储索引节点的后继节点)，入度数组(存储索引节点的入度数)
+     */
+    public static boolean canFinish(int numCourses, int[][] prerequisites) {
+        //存储入度为0的节点
+        Queue<Integer> queue=new ArrayDeque<>();
+        //存储节点的入度
+        int[] inDegree=new int[numCourses];
+        //存储索引节点的后继节点 一个结点的后继节点可能有多个
+        List<Integer>[] list= new ArrayList[numCourses];
+        for (int[] arr:prerequisites){
+            //前驱节点
+            int pre=arr[1];
+            //后继节点
+            int suf=arr[0];
+            //指向后继节点
+            if (list[pre]==null){
+                list[pre]=new ArrayList<>();
+            }
+            list[pre].add(suf);
+            //节点入度++
+            inDegree[suf]++;
+        }
+        //添加入度为0的节点
+        for (int i=0;i<numCourses;i++){
+            if (inDegree[i]==0){
+                queue.add(i);
+            }
+        }
+        //出队的结果集 若与课程数一样，说明无环
+        int res=0;
+        //遍历入度为0的节点
+        while (!queue.isEmpty()){
+            res++;
+            int index=queue.poll();
+            //获取该节点的后继节点列表 后继节点列表-1 检查入度为0时入队
+            List<Integer> temp=list[index];
+            for (int i=0;temp!=null && i<temp.size();i++){
+                int next=temp.get(i);
+                if (--inDegree[next]==0){
+                    queue.add(next);
+                }
+            }
+        }
+        return res==numCourses;
+    }
+
     public static void main(String[] args) {
         //int[][] graph={{1,2},{3},{3},{}};
         //System.out.println(allPathsSourceTarget(graph));
@@ -175,6 +232,9 @@ public class Graph {
                 {0,0,0,0,0,0,0,1,1,0,0,0,0}};
         //System.out.println(maxAreaOfIsland(g));
         int[][] orange={{2,2,2,1,1}};
-        System.out.println(orangesRotting(orange));
+//        System.out.println(orangesRotting(orange));
+        int numCourses=2;
+        //int[][] prerequisites=new int[][]{{2,1},{3,1},{4,1},{5,2},{5,3},{6,4},{7,5},{8,5},{8,6},{9,7},{9,8}};
+        canFinish(numCourses,new int[][]{{1,0}});
     }
 }
