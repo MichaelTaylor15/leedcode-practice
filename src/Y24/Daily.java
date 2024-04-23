@@ -816,6 +816,42 @@ public class Daily {
             }
         }
     }
+
+    /**
+     * 1052. 爱生气的书店老板
+     * @param customers i分钟customers[i]个顾客  [1,0,1,2,1,1,7,5]
+     * @param grumpy grumpy[i]==1=生气          [0,1,0,1,0,1,0,1]
+     * @param minutes 连续不生气的min            3
+     * @return 一天中最多满意的顾客
+     * result=不生气的时候的顾客数量+(max)生气的时候的顾客数量
+     * (max)生气的时候的顾客数量=滑动窗口(minutes长度)中最大值(当grumpy[i]=1时开始滑动)
+     */
+    public static int maxSatisfied(int[] customers, int[] grumpy, int minutes) {
+        //不生气的满意顾客数量
+        int sum=0;
+        int max=Integer.MIN_VALUE;
+        for (int i=0;i<customers.length;i++){
+            if (grumpy[i]==0){
+                sum+=customers[i];
+            }
+        }
+        for (int i=0;i<grumpy.length;i++){
+            if (grumpy[i]==1){
+                int num=customers[i];
+                for (int j=i+1;j<grumpy.length && j<i+minutes;j++){
+                    if (grumpy[j]==1){
+                        num+=customers[j];
+                    }
+                }
+                max=Math.max(num,max);
+            }
+        }
+        if (max==Integer.MIN_VALUE){
+            max=0;
+        }
+        return sum+max;
+    }
+
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
         //System.out.println(validPartition(nums));
@@ -910,7 +946,8 @@ public class Daily {
 //        System.out.println(findMedianSortedArrays(new int[]{1,3,5},new int[]{2,4}));
         //System.out.println(findChampion(2,new int[][]{{1,0}}));
 //        System.out.println(maxHeroes(new int[]{9, 1, 4, 6, 3, 2, 5},10));
-        System.out.println(minMalwareSpread(new int[][]{{1,1,0},{1,1,0},{0,0,1}},new int[]{0,1}));
+        //System.out.println(minMalwareSpread(new int[][]{{1,1,0},{1,1,0},{0,0,1}},new int[]{0,1}));
+        System.out.println(maxSatisfied(new int[]{1},new int[]{0},1));
     }
 }
 

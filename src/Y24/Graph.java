@@ -1,9 +1,6 @@
 package Y24;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 /*
 * 图、网格
@@ -235,6 +232,91 @@ public class Graph {
 //        System.out.println(orangesRotting(orange));
         int numCourses=2;
         //int[][] prerequisites=new int[][]{{2,1},{3,1},{4,1},{5,2},{5,3},{6,4},{7,5},{8,5},{8,6},{9,7},{9,8}};
-        canFinish(numCourses,new int[][]{{1,0}});
+//        canFinish(numCourses,new int[][]{{1,0}});
+
+         Trie obj = new Trie();
+         String word="apple";
+         String search="app";
+         String start="";
+         obj.insert(word);
+        boolean param_2 = obj.search(search);
+        boolean param_3 = obj.startsWith(start);
+        System.out.println("search "+search+" :"+param_2);
+        System.out.println("start with :" +start);
+
+    }
+}
+
+/**
+ * @member children 子字符节点
+ * @member isWord 表示当前节点字符是否存在
+ */
+class TrieNode{
+    TrieNode[] children;
+    boolean isWord;
+    TrieNode(){
+        children=new TrieNode[26];
+        isWord=false;
+    }
+}
+
+//208. 实现 Trie (前缀树)
+//多叉树实现前缀树，字符仅有小写字母，children存储26个字符，表示下一个字符
+//root节点不设置任何字符
+class Trie {
+    TrieNode trieNode;
+    public Trie() {
+        trieNode=new TrieNode();
+    }
+
+    /**
+     *
+     * @param word 插入的单词
+     */
+    public void insert(String word) {
+        int i=0;
+        TrieNode node=this.trieNode;
+        while (i<word.length()-1){
+            char c=word.charAt(i);
+            int index=c-'a';
+            if (null==node.children[index]){
+                node.children[index]=new TrieNode();
+                node.children[index].isWord=false;
+            }
+            node=node.children[index];
+            i++;
+        }
+        //单词结尾
+        node.children[word.charAt(i)-'a'].isWord=true;
+    }
+
+    public boolean search(String word) {
+        int i=0;
+        TrieNode node=this.trieNode;
+        while (i<word.length()){
+            char c=word.charAt(i);
+            int index=c-'a';
+            if (null==node.children[index]){
+                return false;
+            }
+            node=node.children[index];
+            i++;
+        }
+        return node.isWord;
+    }
+
+    public boolean startsWith(String prefix) {
+        int i=0;
+        TrieNode node=this.trieNode;
+        while (i<prefix.length()){
+            char c=prefix.charAt(i);
+            int index=c-'a';
+            if (null==node.children[index]){
+                return false;
+            }
+            node=node.children[index];
+            i++;
+        }
+        return true;
     }
 }
