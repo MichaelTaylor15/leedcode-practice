@@ -1,6 +1,7 @@
 package Y24;
 
 
+import java.net.Inet4Address;
 import java.util.*;
 
 class TreeNode {
@@ -206,6 +207,62 @@ public class Tree {
         lowestCommonAncestor(root.right,p,q);
         return null;
     }
+
+    /**
+     * 2385. 感染二叉树需要的总时间
+     * @param root 根节点
+     * @param start 0分钟被感染的节点值
+     * @return 时间
+     * BFS、队列存储当前被感染的节点
+     * HashMap 存储每个节点的父节点 方便感染时找到
+     */
+    public static int amountOfTime(TreeNode root, int start) {
+        TreeNode node=root;
+        //循环队列
+        Queue<TreeNode> queue=new ArrayDeque<>();
+        queue.add(node);
+        //记录每个节点的父节点
+        HashMap<Integer,TreeNode> parentMap=new HashMap<>();
+        //记录节点是否被感染
+        HashMap<Integer,Boolean> isInflect=new HashMap<>();
+        //感染队列
+        Queue<TreeNode> infect=new ArrayDeque<>();
+        while (!queue.isEmpty()){
+            TreeNode cur=queue.poll();
+            if (cur.val==start){
+                isInflect.put(cur.val,true);
+                infect.add(cur);
+            }
+            if (cur.left!=null){
+                parentMap.put(cur.left.val,cur);
+                queue.add(cur.left);
+            }
+            if (cur.right!=null){
+                parentMap.put(cur.right.val,cur);
+                queue.add(cur.right);
+            }
+        }
+        int time=-1;
+        while (!infect.isEmpty()){
+            int size=infect.size();
+            while (size-->0){
+                TreeNode cur=infect.poll();
+                isInflect.put(cur.val,true);
+                if (cur.left!=null && !isInflect.containsKey(cur.left.val)){
+                    infect.add(cur.left);
+                }
+                if (cur.right!=null && !isInflect.containsKey(cur.right.val)){
+                    infect.add(cur.right);
+                }
+                TreeNode parent=parentMap.get(cur.val);
+                if (parent!=null && !isInflect.containsKey(parent.val)){
+                    infect.add(parent);
+                }
+            }
+            time++;
+        }
+        return time;
+    }
     public static void main(String[] args) {
 //                   3
 //                 /    \
@@ -234,5 +291,8 @@ public class Tree {
         int[] inorder={9,3,15,20,7};
         //TreeNode tree= buildTree(preorder,inorder);
         //System.out.println(pathSum(root,3));
+        TreeNode t=new TreeNode(2);
+        t.left=new TreeNode(5);
+        System.out.println(amountOfTime(t,5));
     }
 }
