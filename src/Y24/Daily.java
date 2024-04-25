@@ -862,10 +862,19 @@ public class Daily {
      * 20
      * 15+1,11+1,7+1,3+1,4
      */
-    public int distanceTraveled(int mainTank, int additionalTank) {
+    public static int distanceTraveled(int mainTank, int additionalTank) {
         int sum=0;
         if (mainTank>=5){
-
+            while (mainTank>=5){
+                sum+=5*10;
+                mainTank-=5;
+                if (--additionalTank>=0){
+                    ++mainTank;
+                }
+            }
+            if (mainTank>0){
+                sum+=mainTank*10;
+            }
         }else{
             sum=mainTank*10;
         }
@@ -968,7 +977,8 @@ public class Daily {
         //System.out.println(findChampion(2,new int[][]{{1,0}}));
 //        System.out.println(maxHeroes(new int[]{9, 1, 4, 6, 3, 2, 5},10));
         //System.out.println(minMalwareSpread(new int[][]{{1,1,0},{1,1,0},{0,0,1}},new int[]{0,1}));
-        System.out.println(maxSatisfied(new int[]{1},new int[]{0},1));
+//        System.out.println(maxSatisfied(new int[]{1},new int[]{0},1));
+        System.out.println(distanceTraveled(20,5));
     }
 }
 
