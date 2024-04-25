@@ -852,6 +852,27 @@ public class Daily {
         return sum+max;
     }
 
+    /**
+     * todo
+     * 2739. 总行驶距离
+     * 使用完5L主油箱，可以加1L副油箱的到主油箱，前提是有
+     * @param mainTank 主油箱燃料 L
+     * @param additionalTank 副油箱燃料 L
+     * @return 最远行驶距离
+     * 20
+     * 15+1,11+1,7+1,3+1,4
+     */
+    public int distanceTraveled(int mainTank, int additionalTank) {
+        int sum=0;
+        if (mainTank>=5){
+
+        }else{
+            sum=mainTank*10;
+        }
+        return sum;
+    }
+
+
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
         //System.out.println(validPartition(nums));
