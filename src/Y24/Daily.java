@@ -853,7 +853,6 @@ public class Daily {
     }
 
     /**
-     * todo
      * 2739. 总行驶距离
      * 使用完5L主油箱，可以加1L副油箱的到主油箱，前提是有
      * @param mainTank 主油箱燃料 L
@@ -882,6 +881,28 @@ public class Daily {
     }
 
 
+    /**
+     * 负二进制转换
+     * @param n 待转换的数
+     * @return 负二进制
+     * 3=(-2)^0+(-2)^1+(-2)^2
+     */
+    public static String baseNeg2(int n) {
+        if (n==0){
+            return "0";
+        }
+        StringBuilder builder=new StringBuilder();
+        while(n!=0){
+            int val=n%(-2);
+            n=n/(-2);
+            if (val<0){
+                val=1;
+                n++;
+            }
+            builder.insert(0,val);
+        }
+        return builder.toString();
+    }
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
         //System.out.println(validPartition(nums));
@@ -978,7 +999,8 @@ public class Daily {
 //        System.out.println(maxHeroes(new int[]{9, 1, 4, 6, 3, 2, 5},10));
         //System.out.println(minMalwareSpread(new int[][]{{1,1,0},{1,1,0},{0,0,1}},new int[]{0,1}));
 //        System.out.println(maxSatisfied(new int[]{1},new int[]{0},1));
-        System.out.println(distanceTraveled(20,5));
+        //System.out.println(distanceTraveled(20,5));
+        System.out.println(baseNeg2(2));
     }
 }
 
