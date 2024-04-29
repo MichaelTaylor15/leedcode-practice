@@ -903,6 +903,37 @@ public class Daily {
         }
         return builder.toString();
     }
+
+    /**
+     * todo
+     * 1329. 将矩阵按对角线排序
+     * @param mat 二维矩阵
+     * @return 对角线排好序的矩阵
+     * {11,25,66,1,69,7}
+     * {23,55,17,45,15,52}
+     * {75,31,36,44,58,8}
+     * {22,27,33,25,68,4}
+     * {84,28,14,11,5,50}}
+     *        ||
+     *       VVV
+     * {{5,17,4,1,52,7},
+     * {11,11,25,45,8,69},
+     * {14,23,25,44,58,15},
+     * {22,27,31,36,50,66},
+     * {84,28,75,33,55,68}}
+     * 需要循环处理的次数 m+n-1,当对角线只有一个数时不需要处理，即 (i=m && j=0)||(i=0 && j=n)
+     * 思路：对矩阵的对角线所有数存放如一个数组，数组进行排序，再把这些数放回矩阵对角线
+     */
+    public int[][] diagonalSort(int[][] mat) {
+        int m=mat.length;
+        int n=mat[0].length;
+        int i=0,j=n-1;
+        for (int t=0;t<m+n+1;t++){
+
+
+        }
+        return null;
+    }
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
         //System.out.println(validPartition(nums));
@@ -1000,7 +1031,13 @@ public class Daily {
         //System.out.println(minMalwareSpread(new int[][]{{1,1,0},{1,1,0},{0,0,1}},new int[]{0,1}));
 //        System.out.println(maxSatisfied(new int[]{1},new int[]{0},1));
         //System.out.println(distanceTraveled(20,5));
-        System.out.println(baseNeg2(2));
+//        System.out.println(baseNeg2(2));
+        int[][] mat={
+                {11,25,66,1,69,7},
+                {23,55,17,45,15,52},
+                {75,31,36,44,58,8},
+                {22,27,33,25,68,4},
+                {84,28,14,11,5,50}};
     }
 }
 
