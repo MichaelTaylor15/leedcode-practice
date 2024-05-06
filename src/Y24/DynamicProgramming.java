@@ -270,6 +270,17 @@ public class DynamicProgramming {
         }
         return res;
     }
+
+    /**
+     * todo
+     * 741. 摘樱桃
+     * 表格有三种状态，0表示空，1表示樱桃，-1表示荆棘挡路
+     * @param grid 网格
+     * @return 最多可以摘的樱桃数
+     */
+    public int cherryPickup(int[][] grid) {
+
+    }
     public static void main(String[] args) {
         //           {0,2,4,1,2,0}
         //int[] height={4,2,0,3,2,5};
