@@ -274,12 +274,46 @@ public class DynamicProgramming {
     /**
      * todo
      * 741. 摘樱桃
-     * 表格有三种状态，0表示空，1表示樱桃，-1表示荆棘挡路
+     * 表格有三种状态，0表示空，1表示樱桃，-1表示荆棘挡路；只能往下或往右走
      * @param grid 网格
      * @return 最多可以摘的樱桃数
      */
-    public int cherryPickup(int[][] grid) {
-
+    public static int cherryPickup(int[][] grid) {
+        int[][] dp=new int[grid.length][grid[0].length];
+        if (grid[0][0]==-1){
+            return 0;
+        }
+        dp[0][0]=grid[0][0]==1?1:0;
+        for (int i=1;i<grid.length;i++){
+            int cnt=0;
+            if (grid[0][i]==1){
+                cnt=1;
+            } else if (grid[0][i]==-1) {
+                dp[0][i]=-1;
+                continue;
+            }
+            dp[0][i]=dp[0][i-1]+cnt;
+        }
+        for (int i=1;i<grid.length;i++){
+            int cnt=0;
+            if (grid[i][0]==1){
+                cnt=1;
+            } else if (grid[i][0]==-1) {
+                dp[i][0]=-1;
+                continue;
+            }
+            dp[i][0]=dp[i-1][0]+cnt;
+        }
+        for (int i=1;i<grid.length;i++){
+            for (int j=1;j<grid[i].length;j++){
+                if (grid[i][j]==-1 ||(dp[i-1][j]==-1 && dp[i][j-1]==-1)){
+                    dp[i][j]=-1;
+                    continue;
+                }
+                dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1])+grid[i][j];
+            }
+        }
+        return dp[grid.length-1][grid[0].length-1]==-1?0:dp[grid.length-1][grid[0].length-1];
     }
     public static void main(String[] args) {
         //           {0,2,4,1,2,0}
@@ -317,7 +351,12 @@ public class DynamicProgramming {
 //                          {7,8,9}};
 //        System.out.println(minFallingPathSum(matrix));
 
-        String str="cbbd";
-        System.out.println(longestPalindrome(str));
+        //String str="cbbd";
+        //System.out.println(longestPalindrome(str));
+        int[][] grid={
+                {1,1,-1},
+                {1,-1,1},
+                {-1,1,1}};
+        System.out.println(cherryPickup(grid));
     }
 }

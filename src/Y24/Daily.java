@@ -934,6 +934,31 @@ public class Daily {
         }
         return null;
     }
+
+    /**
+     * 2079. 给植物浇水
+     * @param plants plants[i]:每个植物i所需的水
+     * @param capacity 水桶容量
+     * @return 需要的步数
+     */
+    public static int wateringPlants(int[] plants, int capacity) {
+        int times=0;
+        int i=0;
+        int surplus=capacity;
+        while(i<plants.length){
+            if(plants[i]>surplus){
+                //回去取水、走过来
+                times+=Math.max(0,2*i);
+                surplus=capacity;
+            }else{
+                times++;
+                surplus-=plants[i];
+                i++;
+            }
+        }
+        return times;
+    }
+
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
         //System.out.println(validPartition(nums));
@@ -1038,6 +1063,10 @@ public class Daily {
                 {75,31,36,44,58,8},
                 {22,27,33,25,68,4},
                 {84,28,14,11,5,50}};
+
+        int[] plants={2,2,3,3};
+        int capacity=5;
+        System.out.println(wateringPlants(plants,capacity));
     }
 }
 
