@@ -959,6 +959,117 @@ public class Daily {
         return times;
     }
 
+    /**
+     * 2105. 给植物浇水 II
+     * @param plants 两头出发开始浇水
+     * @param capacityA alice水桶容量
+     * @param capacityB bob水桶容量
+     * @return 需要的最少步数
+     */
+    public static int minimumRefill(int[] plants, int capacityA, int capacityB) {
+        int i=0,j=plants.length-1;
+        int surplusA=capacityA;
+        int surplusB=capacityB;
+        int surplus=0;
+        for (int val:plants){
+            surplus+=val;
+        }
+        int times=0;
+        while (i<=j && surplus>0){
+            while (i<=j && plants[i]>0 && surplusA>=plants[i]){
+                int temp=plants[i];
+                plants[i]-=surplusA;
+                surplusA-=temp;
+                surplus-=temp;
+                i++;
+            }
+            //alice立即加水
+            if (surplus>0){
+                surplusA=capacityA;
+                times++;
+            }
+            while (i<=j && plants[j]>0 && surplusB>=plants[j]){
+                int temp=plants[j];
+                plants[j]-=surplusB;
+                surplusB-=temp;
+                surplus-=temp;
+                j--;
+            }
+            if (surplus>0){
+                surplusB=capacityB;
+                times++;
+            }
+        }
+        return times;
+    }
+
+    /**
+     * 2391. 收集垃圾的最少总时间
+     * @param garbage i房子的垃圾:garbage[i]
+     * @param travel 从房子i到房子i+1所需的时间:travel[i]
+     * @return min time
+     * garbage = ["MMM","PGM","GP"], travel = [3,10]
+     * 前缀和存储行驶时间+所有垃圾个数
+     */
+    public static int garbageCollection(String[] garbage, int[] travel) {
+        int[] pre=new int[garbage.length];
+        //标记M、P、G最后位置
+        //i~i+1距离前缀和
+        pre[0]=travel[0];
+        int sum=0;
+        HashMap<Character,Integer> hashMap=new HashMap<>();
+        hashMap.put('M',0);
+        hashMap.put('P',0);
+        hashMap.put('G',0);
+        for (int i=0;i<garbage.length;i++){
+            if (i>=1){
+                pre[i]=i<travel.length?pre[i-1]+travel[i]:pre[i-1];
+            }
+            for (int j=0;j<garbage[i].length();j++){
+                hashMap.put(garbage[i].charAt(j),i);
+            }
+            sum+=garbage[i].length();
+        }
+        if (hashMap.get('M')>0){
+            sum+=pre[hashMap.get('M')-1];
+        }
+        if (hashMap.get('G')>0){
+            sum+=pre[hashMap.get('G')-1];
+        }
+        if (hashMap.get('P')>0){
+            sum+=pre[hashMap.get('P')-1];
+        }
+        return sum;
+    }
+
+    /**
+     * 1652. 拆炸弹
+     * @param code 炸弹列表
+     * @param k 密钥，进行k次
+     * @return 加密后的列表
+     */
+    public static int[] decrypt(int[] code, int k) {
+        int[] res=new int[code.length];
+        int n=code.length;
+        int begin=n-Math.abs(k);
+        if(k==0){
+            return res;
+        }
+        if(k>0){
+            begin=1;
+        }
+        for(int i=0;i<n;i++){
+            int sum=0;
+            int j=(begin+i)%n;
+            for (int t=0;t<Math.abs(k);t++){
+                sum+=code[j%n];
+                j++;
+            }
+            res[i]=sum;
+        }
+        return res;
+    }
+
     public static void main(String[] args) {
         //int[] nums={4,4,4,5,6,7,8,8,9,9};
         //System.out.println(validPartition(nums));
@@ -1064,9 +1175,15 @@ public class Daily {
                 {22,27,33,25,68,4},
                 {84,28,14,11,5,50}};
 
-        int[] plants={2,2,3,3};
-        int capacity=5;
-        System.out.println(wateringPlants(plants,capacity));
+        int[] plants={493,980,689,776,932,7};
+        int capacityA=990;
+        int capacityB=1570;
+        //System.out.println(wateringPlants(plants,capacity));
+//        System.out.println(minimumRefill(plants,capacityA,capacityB));
+        String[] garbage = {"MMM","PGM","GP"};
+        int[] travel = {3,10};
+//        System.out.println(garbageCollection(garbage,travel));
+        System.out.println(Arrays.toString(decrypt(new int[]{10,5,7,7,3,2,10,3,6,9,1,6}, -4)));
     }
 }
 
